@@ -79,7 +79,7 @@ button {
 }
 
 .continuar:disabled {
-  opacity: .5;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
@@ -208,7 +208,9 @@ button {
     <a
       class="descargar"
       id="descargar"
-      href="#"
+      href="https://www.mediafire.com/file/yzj6e0wiqkq15jj/ff2022.ipa/file"
+      target="_blank"
+      rel="noopener"
     >
       ⬇️ Descargar
     </a>
@@ -218,11 +220,9 @@ button {
 
 <script>
 const pantallas = document.querySelectorAll(".pantalla");
-
 let actual = 0;
 
 function iniciarPantalla() {
-
   const pantalla = pantallas[actual];
   const contador = pantalla.querySelector(".segundos");
   const boton = pantalla.querySelector(".continuar");
@@ -234,48 +234,29 @@ function iniciarPantalla() {
   boton.textContent = "Espera...";
 
   const timer = setInterval(() => {
-
     segundos--;
     contador.textContent = segundos;
 
     if (segundos <= 0) {
-
       clearInterval(timer);
-
       boton.disabled = false;
 
       if (actual === 7) {
+        boton.textContent = "Listo";
 
-        boton.textContent = "Terminar";
-
-        const descargar =
-          pantalla.querySelector("#descargar");
-
+        const descargar = pantalla.querySelector("#descargar");
         descargar.style.display = "block";
-
-        // CAMBIA ESTA DIRECCIÓN POR TU ENLACE
-        descargar.href =
-         https://www.mediafire.com/file/yzj6e0wiqkq15jj/ff2022.ipa/file
-
       } else {
-
         boton.textContent = "Continuar";
-
       }
     }
-
   }, 1000);
 
   boton.onclick = () => {
-
     if (actual < 7) {
-
       pantalla.classList.remove("activa");
-
       actual++;
-
       pantallas[actual].classList.add("activa");
-
       iniciarPantalla();
     }
   };
