@@ -1,9 +1,27 @@
+let audioContext;
+
 function playKeySound() {
-  const audio = new Audio(
-    "data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA="
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+
+  const oscillator = audioContext.createOscillator();
+  const gain = audioContext.createGain();
+
+  oscillator.type = "square";
+  oscillator.frequency.value = 700;
+
+  gain.gain.setValueAtTime(0.04, audioContext.currentTime);
+  gain.gain.exponentialRampToValueAtTime(
+    0.001,
+    audioContext.currentTime + 0.06
   );
 
-  audio.play().catch(() => {});
+  oscillator.connect(gain);
+  gain.connect(audioContext.destination);
+
+  oscillator.start();
+  oscillator.stop(audioContext.currentTime + 0.06);
 }
 
 function toggle(button) {
@@ -11,15 +29,13 @@ function toggle(button) {
 
   button.classList.toggle("active");
 
-  if (button.classList.contains("active")) {
-    button.textContent = "ON";
-  } else {
-    button.textContent = "OFF";
-  }
+  button.textContent =
+    button.classList.contains("active") ? "ON" : "OFF";
 }
 
 function launchDemo() {
   playKeySound();
+
   document.getElementById("status").textContent =
     "STATUS: DEMO RUNNING";
 }
