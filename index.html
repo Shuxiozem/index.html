@@ -1,44 +1,137 @@
 <!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
   <meta charset="UTF-8">
-
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Mi página</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
 
     body {
-
       margin: 0;
-
       font-family: Arial, sans-serif;
-
       background: #16002b;
-
       color: white;
-
       text-align: center;
-
     }
 
     .contenedor {
-
       max-width: 420px;
-
-      margin: 80px auto;
-
-      padding: 30px;
-
-      background: #280047;
-
-      border-radius: 20px;
-
+      margin: 0 auto;
+      padding: 30px 20px;
     }
 
-    h1 
+    h1 {
+      margin-top: 30px;
+      font-size: 30px;
+    }
 
+    .anuncio {
+      margin-top: 30px;
+      min-height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #280047;
+      border: 1px solid #6b22a8;
+      border-radius: 20px;
+      color: #cfa8ff;
+      font-size: 18px;
+    }
+
+    .contador {
+      margin: 25px 0;
+      font-size: 20px;
+    }
+
+    button {
+      width: 100%;
+      padding: 15px;
+      margin-top: 12px;
+      border: 0;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #continuar {
+      background: #8b3dff;
+      color: white;
+    }
+
+    #anunciar {
+      background: #280047;
+      color: #d9baff;
+      border: 1px solid #8b3dff;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .nota {
+      margin-top: 25px;
+      font-size: 13px;
+      color: #b9a5c9;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="contenedor">
+
+    <h1>Bienvenido</h1>
+
+    <div class="anuncio">
+      ESPACIO PUBLICITARIO
+    </div>
+
+    <div class="contador">
+      Espera <span id="segundos">8</span> segundos...
+    </div>
+
+    <button id="continuar" disabled>
+      Espera...
+    </button>
+
+    <button id="anunciar" onclick="alert('Contacto para publicidad')">
+      📢 Anuncia aquí
+    </button>
+
+    <div class="nota">
+      Publicidad y contenido promocional.
+    </div>
+
+  </div>
+
+  <script>
+    let segundos = 8;
+
+    const contador = document.getElementById("segundos");
+    const continuar = document.getElementById("continuar");
+
+    const temporizador = setInterval(() => {
+      segundos--;
+
+      contador.textContent = segundos;
+
+      if (segundos <= 0) {
+        clearInterval(temporizador);
+        continuar.disabled = false;
+        continuar.textContent = "Continuar";
+      }
+    }, 1000);
+
+    continuar.addEventListener("click", () => {
+      alert("Aquí puedes colocar tu enlace.");
+    });
+  </script>
+
+</body>
+</html>
