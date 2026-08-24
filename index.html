@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>shuzioxem</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #16002b;
+  color: white;
+  text-align: center;
+}
+
+.contenedor {
+  max-width: 420px;
+  margin: auto;
+  padding: 25px 20px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #cfa8ff;
+  margin: 20px 0;
+}
+
+.pantalla {
+  display: none;
+}
+
+.pantalla.activa {
+  display: block;
+}
+
+.anuncio {
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #280047;
+  border: 1px solid #6b22a8;
+  border-radius: 20px;
+  color: #cfa8ff;
+  font-size: 18px;
+  margin: 25px 0;
+}
+
+.contador {
+  font-size: 20px;
+  margin: 20px 0;
+}
+
+.nombre {
+  color: #b878ff;
+  font-weight: bold;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 12px;
+  border: 0;
+  border-radius: 12px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.continuar {
+  background: #8b3dff;
+  color: white;
+}
+
+.continuar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.descargar {
+  display: none;
+  background: #8b3dff;
+  color: white;
+  text-decoration: none;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+  <div class="logo">shuzioxem</div>
+
+  <!-- PANTALLA 1 -->
+  <div class="pantalla activa">
+    <h2>Paso 1 de 8</h2>
+    <div class="anuncio">ESPACIO PUBLICITARIO</div>
+
+    <div class="contador">
+      <span class="nombre">shuzioxem</span> • Espera
+      <span class="segundos">8</span> segundos...
+    </div>
+
+    <button class="continuar" disabled>Espera...</button>
+  </div>
+
+  <!-- PANTALLA 2 -->
+  <div class="pantalla">
+    <h2>Paso 2 de 8</h2>
+    <div class="anuncio">ESPACIO PUBLICITARIO</div>
+
+    <div class="contador">
+      <span class="nombre">shuzioxem</span> • Espera
+      <span class="segundos">8</span> segundos...
+    </div>
+
+    <button class="continuar" disabled>Espera...</button>
+  </div>
+
+  <!-- PANTALLA 3 -->
+  <div class="pantalla">
+    <h2>Paso 3 de 8</h2>
+    <div class="anuncio">ESPACIO PUBLICITARIO</div>
+
+    <div class="contador">
+      <span class="nombre">shuzioxem</span> • Espera
+      <span class="segundos">8</span> segundos...
+    </div>
+
+    <button class="continuar" disabled>Espera...</button>
+  </div>
+
+  <!-- PANTALLA 4 -->
+  <div class="pantalla">
+    <h2>Paso 4 de 8</h2>
+    <div class="anuncio">ESPACIO PUBLICITARIO</div>
+
+    <div class="contador">
+      <span class="nombre">shuzioxem</span> • Espera
+      <span class="segundos">8</span> segundos...
+    </div>
+
+    <button class="continuar" disabled>Espera...</button>
+  </div>
+
+  <!-- PANTALLA 5 -->
+  <div class="pantalla">
+    <h2>Paso 5 de 8</h2>
+    <div class="anuncio">ESPACIO PUBLICITARIO</div>
+
+    <div class="contador">
+      <span class="nombre">shuzioxem</span> • Espera
+      <span class="segundos">8</span> segundos...
+    </div>
+
+    <button class="continuar" disabled>Espera...</button>
+  </div>
+
+  <!-- PANTALLA 6 -->
+  <div class="pantalla">
+    <h2>Paso 6 de 8</h2>
+    <div class="anuncio">ESPACIO PUBLICITARIO</div>
+
+    <div class="contador">
+      <span class="nombre">shuzioxem</span> • Espera
+      <span class="segundos">8</span> segundos...
+    </div>
+
+    <button class="continuar" disabled>Espera...</button>
+  </div>
+
+  <!-- PANTALLA 7 -->
+  <div class="pantalla">
+    <h2>Paso 7 de 8</h2>
+    <div class="anuncio">ESPACIO PUBLICITARIO</div>
+
+    <div class="contador">
+      <span class="nombre">shuzioxem</span> • Espera
+      <span class="segundos">8</span> segundos...
+    </div>
+
+    <button class="continuar" disabled>Espera...</button>
+  </div>
+
+  <!-- PANTALLA 8 -->
+  <div class="pantalla">
+    <h2>Paso 8 de 8</h2>
+    <div class="anuncio">ESPACIO PUBLICITARIO</div>
+
+    <div class="contador">
+      <span class="nombre">shuzioxem</span> • Espera
+      <span class="segundos">8</span> segundos...
+    </div>
+
+    <button class="continuar" disabled>Espera...</button>
+
+    <a
+      class="descargar"
+      id="descargar"
+      href="https://www.mediafire.com/file/yzj6e0wiqkq15jj/ff2022.ipa/file"
+      target="_blank"
+      rel="noopener"
+    >
+      ⬇️ Descargar
+    </a>
+  </div>
+
+</div>
+
+<script>
+const pantallas = document.querySelectorAll(".pantalla");
+let actual = 0;
+
+function iniciarPantalla() {
+  const pantalla = pantallas[actual];
+  const contador = pantalla.querySelector(".segundos");
+  const boton = pantalla.querySelector(".continuar");
+
+  let segundos = 8;
+
+  contador.textContent = segundos;
+  boton.disabled = true;
+  boton.textContent = "Espera...";
+
+  const timer = setInterval(() => {
+    segundos--;
+    contador.textContent = segundos;
+
+    if (segundos <= 0) {
+      clearInterval(timer);
+      boton.disabled = false;
+
+      if (actual === 7) {
+        boton.textContent = "Listo";
+
+        const descargar = pantalla.querySelector("#descargar");
+        descargar.style.display = "block";
+      } else {
+        boton.textContent = "Continuar";
+      }
+    }
+  }, 1000);
+
+  boton.onclick = () => {
+    if (actual < 7) {
+      pantalla.classList.remove("activa");
+      actual++;
+      pantallas[actual].classList.add("activa");
+      iniciarPantalla();
+    }
+  };
+}
+
+iniciarPantalla();
+</script>
+
+</body>
+</html>
