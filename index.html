@@ -1,0 +1,126 @@
+import pyautogui
+import time
+import random
+import keyboard
+import numpy as np  # Para cálculos matemáticos más avanzados
+import winsound
+
+# --- CONFIGURACIÓN DE EVASIÓN ---
+# Lista de colores a buscar (más difícil de detectar que uno solo)
+# Debes capturar estos colores del juego para cada skin/mapa
+TARGET_COLORS = {
+    'cabeza_skin1': (150, 60, 210),
+    'cabeza_skin2': (180, 80, 220),
+    # Agrega más colores aquí
+}
+
+# Teclas de control
+TOGGLE_KEY = 'f6'
+EXIT_KEY = 'esc'
+
+# Configuración de "humanización"
+AIM_SMOOTHNESS = 0.15  # Qué tan suave es el movimiento (0.1 = muy suave, 0.5 = más rápido)
+AIM_DEVIATION = 3     # Píxeles de desviación aleatoria para que el aim no sea perfecto
+REACTION_TIME = (0.05, 0.15) # Min/Max segundos de "reacción" antes de disparar
+
+# --- VARIABLES GLOBALES ---
+aimbot_activo = False
+running = True
+
+def encontrar_objetivo_avanzado():
+    """
+    Busca múltiples colores en regiones clave de la pantalla (cabeza, torso).
+    Devuelve la coordenada (x, y) del objetivo más cercano al centro.
+    """
+    # Dividimos la pantalla en regiones para optimizar la búsqueda
+    screen_width, screen_height = pyautogui.size()
+    center_x, center_y = screen_width / 2, screen_height / 2
+    
+    # Región central donde buscar (para mayor rendimiento)
+    search_region = (center_x - 300, center_y - 200, 600, 400)
+    
+    targets_found = []
+    
+    for color_name, target_color in TARGET_COLORS.items():
+        try:
+            # Buscamos todos los píxeles de ese color, no solo el centro
+            locations = pyautogui.locateAllOnScreen(target_color, region=search_region, confidence=0.85)
+            
+            for loc in locations:
+                # Calculamos el centro de cada punto encontrado
+                target_x, target_y = pyautogui.center(loc)
+                # Calculamos la distancia al centro de la pantalla para priorizar el más cercano
+                distance = np.sqrt((target_x - center_x)**2 + (target_y - center_y)**2)
+                targets_found.append({'pos': (target_x, target_y), 'dist': distance})
+        except pyautogui.ImageNotFoundException:
+            pass # Si no se encuentra un color, continuamos con el siguiente
+
+    if not targets_found:
+        return None
+
+    # Ordenamos los objetivos por distancia y devolvemos el más cercano
+    closest_target = min(targets_found, key=lambda x: x['dist'])
+    return closest_target['pos']
+
+def mover_aim_humanizado(posicion_objetivo):
+    """
+    Mueve el ratón con un patrón curvo y aleatorio para simular un movimiento humano.
+    """
+    if not posicion_objetivo:
+        return
+
+    current_x, current_y = pyautogui.position()
+    target_x, target_y = posicion_objetivo
+    
+    # Añadimos una pequeña desviación aleatoria para que el aim no sea un pixel perfecto
+    target_x += random.randint(-AIM_DEVIATION, AIM_DEVIATION)
+    target_y += random.randint(-AIM_DEVIATION, AIM_DEVIATION)
+    
+    # Calculamos la diferencia (delta) para el movimiento
+    delta_x = (target_x - current_x) * AIM_SMOOTHNESS
+    delta_y = (target_y - current_y) * AIM_SMOOTHNESS
+    
+    # Movemos el ratón con una duración aleatoria para variar la velocidad
+    duration = random.uniform(0.02, 0.05)
+    pyautogui.moveRel(delta_x, delta_y, duration=duration)
+
+def sonido_activacion():
+    """Reproduce un sonido de 'clic' de tecla."""
+    winsound.Beep(1000, 100)
+
+def toggle_aimbot():
+    """Activa o desactiva el aimbot."""
+    global aimbot_activo
+    aimbot_activo = not aimbot_activo
+    sonido_activacion()
+    if aimbot_activo:
+        print("Aimbot ACTIVADO. Modo sigilo activado.")
+    else:
+        print("Aimbot DESACTIVADO.")
+
+def salir():
+    """Detiene el script."""
+    global running
+    running = False
+    print("Script detenido. Adios.")
+
+# --- BUCLE PRINCIPAL ---
+print(f"Script de Aimbot Avanzado iniciado.")
+print(f"Presiona '{TOGGLE_KEY}' para activar/desactivar.")
+print(f"Presiona '{EXIT_KEY}' para salir.")
+
+keyboard.add_hotkey(TOGGLE_KEY, toggle_aimbot)
+keyboard.add_hotkey(EXIT_KEY, salir)
+
+try:
+    while running:
+        if aimbot_activo and pyautogui.mouse.is_down(button='left'): # Solo activa si se está disparando
+            posicion = encontrar_objetivo_avanzado()
+            if posicion:
+                mover_aim_humanizado(posicion)
+                # Añadimos un pequeño retraso aleatorio antes de "disparar" (hacer clic)
+                time.sleep(random.uniform(*REACTION_TIME))
+                # pyautogui.click() # Opcional: si quieres que el script dispare por ti
+        time.sleep(0.01) # Pequeña pausa para no sobrecargar el CPU
+except KeyboardInterrupt:
+    salir()
